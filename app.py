@@ -127,7 +127,7 @@ def display_page(pathname):
     elif pathname == "/page-map":
         return layout_map_page
     else:
-        return layout
+        return layout_about_page
 
 if __name__ == '__main__':
     app.run_server(
