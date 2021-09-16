@@ -23,7 +23,8 @@ def generate_bipv_db_map(file_path):
         ))
 
     fig.update_layout(
-        autosize=True,
+        autosize=False,
+        margin=dict(l=0, r=0, t=0, b=0),
         hovermode='closest',
         mapbox=dict(
             accesstoken=mapbox_access_token,
@@ -34,23 +35,21 @@ def generate_bipv_db_map(file_path):
             ),
             pitch=0
         ),
-        height=600,
-        width=800,
     )
 
-    fig.update_layout(
-        title="Global BIPV Catalog",
-        font=dict(
-            size=18,
-            family="Raleway",
-            color="Grey"
-        )
-    )
+    # fig.update_layout(
+    #     title="Global BIPV Catalog",
+    #     font=dict(
+    #         size=18,
+    #         family="Raleway",
+    #         color="Grey"
+    #     )
+    # )
 
-    fig.update_layout(
-        title={
-            'y':0.95,
-            'x':0.5,
-            'xanchor': 'center',
-            'yanchor': 'top'})
+    # fig.update_layout(
+    #     title={
+    #         'y':0.95,
+    #         'x':0.5,
+    #         'xanchor': 'center',
+    #         'yanchor': 'top'})
     return fig 

@@ -31,6 +31,11 @@
   border-width: 5px;
 }
 
+.hover_note {
+  height: calc(var(--nav_width) * 0.20);
+  width: 250px;
+}
+
 #body_col { 
   height: 100%;
   width: max-content;
@@ -51,7 +56,7 @@
 
 #footer_row {
   height: 2%;
-  background: pink;
+  background: black;
 }
 
 #nav_bar {
@@ -60,7 +65,7 @@
   position: relative;
   transform-origin: center;
   transform: rotate(270deg);
-  left: calc(var(--nav_width) / -2);
+  left: calc(0px + (var(--nav_width) / -2));
   top: calc(0.98 * var(--app_height) / 2); 
 }
 
@@ -74,19 +79,13 @@
   vertical-align: middle;
 }
 
-#About_button {
-  background: khaki;
+#map {
+  display: block;
+  height: 100%;
+  width: 100%;
 }
 
-#Overview_button {
-  background: khaki;
-}
-
-#Compare_button {
-  background: khaki;
-}
-
-#page-content {
+.content_container {
   height: 100%;
   width: 100%;
   background: coral;

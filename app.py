@@ -3,7 +3,7 @@ import dash_core_components as dcc
 import dash_html_components as html
 from dash.dependencies import Input, Output
 import dash_bootstrap_components as dbc
-# import db_map 
+import db_map 
 
 external_stylesheets = [dbc.themes.BOOTSTRAP]
 
@@ -92,11 +92,11 @@ layout_about_page = html.Div([
 ])
 
 layout_map_page = html.Div([
-    # dcc.Graph(figure=db_map.generate_bipv_db_map('assets/database_records.csv')),
-    html.H2('Map goes here',className='test_h')
-])
-
-
+    dcc.Graph(
+        figure=db_map.generate_bipv_db_map('assets/database_records.csv'),
+        responsive=True,id='map'),
+    # html.H2('Map goes here',className='test_h')
+],className='content_container')
 
 url_bar_and_content_div = html.Div([
     dcc.Location(id='url', refresh=False),
@@ -113,7 +113,6 @@ app.validation_layout = html.Div([
     layout_about_page,
     layout_map_page,
 ])
-
 
 # Index callbacks
 @app.callback(Output('body_col_child', 'children'),
