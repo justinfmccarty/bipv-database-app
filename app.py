@@ -9,11 +9,14 @@ import db_map
 import flask
 
 external_stylesheets = [dbc.themes.BOOTSTRAP]
+
 app = dash.Dash(
     __name__,
     assets_folder = 'assets',
     external_stylesheets=external_stylesheets
     )
+
+server = app.server
 
 def get_menu_items():
     return ['About','Map','Overview','Viewer','Compare'][::-1]
@@ -126,8 +129,7 @@ def display_page(pathname):
     else:
         return layout
 
-# if __name__ == '__main__':
-#     app.run_server(
-#         debug=True)
+if __name__ == '__main__':
+    app.run_server(
+        debug=True)
 
-server = app.server
