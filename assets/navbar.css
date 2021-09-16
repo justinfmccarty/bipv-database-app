@@ -1,0 +1,97 @@
+/* body {
+  background: black;
+} */
+
+:root {
+  --app_height: 750px;
+  --nav_width: calc(var(--app_height) * 0.80);
+}
+
+#page {
+  height: var(--app_height);
+  width: 100%;
+  /* margin-top: 5px; */
+  background: green;
+}
+
+#main_row{
+  height: 98%;
+  width: 100%;
+  vertical-align: top;
+  background: red;
+}
+
+
+#nav_col { 
+  height: 100%;
+  vertical-align: middle;
+  width: 25%;
+  z-index: 1;
+  /* border: solid navy; */
+  border-width: 5px;
+}
+
+#body_col { 
+  height: 100%;
+  width: max-content;
+  z-index: 0;
+  margin-left: -25%;
+  background: orange;
+}
+
+#body_col_child{
+  width: 1140px;
+  margin-left: -15px;
+  height: 100%;
+  background: black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#footer_row {
+  height: 2%;
+  background: pink;
+}
+
+#nav_bar {
+  height: 35px;
+  width: var(--nav_width);
+  position: relative;
+  transform-origin: center;
+  transform: rotate(270deg);
+  left: calc(var(--nav_width) / -2);
+  top: calc(0.98 * var(--app_height) / 2); 
+}
+
+.nav_item {
+  width: 20%;
+  background: cadetblue;
+}
+
+.link_text {
+  text-align: center;
+  vertical-align: middle;
+}
+
+#About_button {
+  background: khaki;
+}
+
+#Overview_button {
+  background: khaki;
+}
+
+#Compare_button {
+  background: khaki;
+}
+
+#page-content {
+  height: 100%;
+  width: 100%;
+  background: coral;
+}
+
+.test_h {
+  color: white;
+}

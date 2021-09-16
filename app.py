@@ -2,46 +2,105 @@ import dash
 import dash_core_components as dcc
 import dash_html_components as html
 from dash.dependencies import Input, Output, State
-
+import dash_bootstrap_components as dbc
+from dash_html_components.Col import Col
+from dash_html_components.Div import Div
+import db_map 
 import flask
 
-app = dash.Dash(__name__)
+external_stylesheets = [dbc.themes.BOOTSTRAP]
+app = dash.Dash(
+    __name__,
+    assets_folder = 'assets',
+    external_stylesheets=external_stylesheets
+    )
+
+def get_menu_items():
+    return ['About','Map','Overview','Viewer','Compare'][::-1]
+
+def pop_over_description(menu_item_name):
+    if menu_item_name=='About':
+        return 'About Popup'
+    elif menu_item_name=='Map':
+        return 'About Map'
+    elif menu_item_name=='Overview':
+        return 'About Overview'
+    elif menu_item_name=='Viewer':
+        return 'About Viewer'
+    elif menu_item_name=='Compare':
+        return 'About Compare'
+
+def get_popover_children():
+    popover_children = dict()
+    menu_items = get_menu_items()
+    for item in menu_items:
+        popover_children[item]=dbc.PopoverBody(pop_over_description(item),className='hover_note')
+    return popover_children
+
+def create_menu_row(menu_item_name):
+    popover_children = get_popover_children()[menu_item_name]
+    main_div = [html.Div(
+        dbc.NavItem(
+            dbc.NavLink(menu_item_name, active=True, href=f"/page-{menu_item_name.lower()}",className='link_text', id=f'{menu_item_name}_link')
+            ),className='nav_item',id=f'{menu_item_name}_button'),
+            dbc.Popover(popover_children,hide_arrow=True,id=f"{menu_item_name}_hover",target=f"{menu_item_name}_link",trigger="hover")]
+    return main_div
+
+def create_nav_items():
+    out_items = []
+    for menu_item in get_menu_items():
+        out_items.append(create_menu_row(menu_item))
+    return [item for sublist in out_items for item in sublist]
+
+# layout = dbc.Container([
+#     dbc.Row([
+#         dbc.Col([
+#             dbc.Nav(
+#                 create_nav_items(),
+#                 vertical=False,id='nav_bar'),
+#                 ],width=3,id='nav_col'),
+#         ######## break to body
+#         dbc.Col(
+#             html.Div(id='body_col_child'),
+#             width=12,id='body_col'),
+#     ],id='main_row'),
+#     dbc.Row([
+#         dbc.Col(html.Div(id='page-content'),width=12,id='footer')
+#         ],id='footer_row')
+# ],id='page')
+
+layout = dbc.Container([
+    dbc.Row([
+        dbc.Col([
+            dbc.Nav(
+                create_nav_items(),
+                vertical=False,id='nav_bar'),
+                ],width=3,id='nav_col'),
+        ######## break to body
+        dbc.Col(
+            html.Div(id='body_col_child'),
+            width=12,id='body_col'),
+    ],id='main_row'),
+    dbc.Row([
+        dbc.Col(html.Div(),width=12,id='footer')
+        ],id='footer_row')
+],id='page')
+
+
+layout_about_page = html.Div([
+    html.H2('About goes here',className='test_h')
+])
+
+layout_map_page = html.Div([
+    # dcc.Graph(figure=db_map.generate_bipv_db_map('assets/database_records.csv')),
+    html.H2('Map goes here',className='test_h')
+])
+
+
 
 url_bar_and_content_div = html.Div([
     dcc.Location(id='url', refresh=False),
-    html.Div(id='page-content')
-])
-
-layout_index = html.Div([
-    dcc.Link('Navigate to "/page-1"', href='/page-1'),
-    html.Br(),
-    dcc.Link('Navigate to "/page-2"', href='/page-2'),
-])
-
-layout_page_1 = html.Div([
-    html.H2('Page 1'),
-    dcc.Input(id='input-1-state', type='text', value='Montreal'),
-    dcc.Input(id='input-2-state', type='text', value='Canada'),
-    html.Button(id='submit-button', n_clicks=0, children='Submit'),
-    html.Div(id='output-state'),
-    html.Br(),
-    dcc.Link('Navigate to "/"', href='/'),
-    html.Br(),
-    dcc.Link('Navigate to "/page-2"', href='/page-2'),
-])
-
-layout_page_2 = html.Div([
-    html.H2('Page 2'),
-    dcc.Dropdown(
-        id='page-2-dropdown',
-        options=[{'label': i, 'value': i} for i in ['LA', 'NYC', 'MTL']],
-        value='LA'
-    ),
-    html.Div(id='page-2-display-value'),
-    html.Br(),
-    dcc.Link('Navigate to "/"', href='/'),
-    html.Br(),
-    dcc.Link('Navigate to "/page-1"', href='/page-1'),
+    layout
 ])
 
 # index layout
@@ -50,42 +109,23 @@ app.layout = url_bar_and_content_div
 # "complete" layout
 app.validation_layout = html.Div([
     url_bar_and_content_div,
-    layout_index,
-    layout_page_1,
-    layout_page_2,
+    layout,
+    layout_about_page,
+    layout_map_page,
 ])
 
 
 # Index callbacks
-@app.callback(Output('page-content', 'children'),
+@app.callback(Output('body_col_child', 'children'),
               Input('url', 'pathname'))
 def display_page(pathname):
-    if pathname == "/page-1":
-        return layout_page_1
-    elif pathname == "/page-2":
-        return layout_page_2
+    if pathname == "/page-about":
+        return layout_about_page
+    elif pathname == "/page-map":
+        return layout_map_page
     else:
-        return layout_index
-
-
-# Page 1 callbacks
-@app.callback(Output('output-state', 'children'),
-              Input('submit-button', 'n_clicks'),
-              State('input-1-state', 'value'),
-              State('input-2-state', 'value'))
-def update_output(n_clicks, input1, input2):
-    return ('The Button has been pressed {} times,'
-            'Input 1 is "{}",'
-            'and Input 2 is "{}"').format(n_clicks, input1, input2)
-
-
-# Page 2 callbacks
-@app.callback(Output('page-2-display-value', 'children'),
-              Input('page-2-dropdown', 'value'))
-def display_value(value):
-    print('display_value')
-    return 'You have selected "{}"'.format(value)
-
+        return layout
 
 if __name__ == '__main__':
-    app.run_server(debug=True)
+    app.run_server(
+        debug=True)
