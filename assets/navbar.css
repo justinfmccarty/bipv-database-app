@@ -25,10 +25,14 @@
 #nav_col { 
   height: 100%;
   vertical-align: middle;
-  width: 25%;
-  z-index: 1;
-  /* border: solid navy; */
   border-width: 5px;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  outline: 0;
 }
 
 .hover_note {
@@ -61,6 +65,7 @@
 
 #nav_bar {
   height: 35px;
+  z-index: 1;
   width: var(--nav_width);
   position: relative;
   transform-origin: center;
@@ -69,14 +74,41 @@
   top: calc(0.98 * var(--app_height) / 2); 
 }
 
+
+#nav_bar {
+  opacity: 0.6;
+  background: white;
+  transition: all 0.8s;
+  /* width: 20%; */
+}
+
+#nav_bar:hover {
+  opacity: 1;
+  transition: all 0.2s;
+}
+
 .nav_item {
   width: 20%;
-  background: cadetblue;
+  height: 100%;
+}
+
+.nav_item:hover {
+  opacity: 1;
+  background: #FBD120;
+  transition: all 0.2s;
 }
 
 .link_text {
   text-align: center;
   vertical-align: middle;
+  color: black;
+}
+
+.link_text:hover {
+  text-align: center;
+  vertical-align: middle;
+  color: black;
+  transition: all 0.2s;
 }
 
 #map {
@@ -91,6 +123,6 @@
   background: coral;
 }
 
-.test_h {
-  color: white;
+.placeholder_text {
+  color: red;
 }

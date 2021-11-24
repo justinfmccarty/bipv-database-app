@@ -1,9 +1,6 @@
-import dash
-import dash_core_components as dcc
-import dash_html_components as html
-from dash.dependencies import Input, Output
+from dash import dash, callback, html, dcc, dash_table, Input, Output, State, MATCH, ALL
+import db_map
 import dash_bootstrap_components as dbc
-import db_map 
 
 external_stylesheets = [dbc.themes.BOOTSTRAP]
 
@@ -41,9 +38,17 @@ def create_menu_row(menu_item_name):
     popover_children = get_popover_children()[menu_item_name]
     main_div = [html.Div(
         dbc.NavItem(
-            dbc.NavLink(menu_item_name, active=True, href=f"/page-{menu_item_name.lower()}",className='link_text', id=f'{menu_item_name}_link')
+            dbc.NavLink(menu_item_name,
+                        active=True, 
+                        href=f"/page-{menu_item_name.lower()}",
+                        className='link_text',
+                        id=f'{menu_item_name}_link')
             ),className='nav_item',id=f'{menu_item_name}_button'),
-            dbc.Popover(popover_children,hide_arrow=True,id=f"{menu_item_name}_hover",target=f"{menu_item_name}_link",trigger="hover")]
+            dbc.Popover(popover_children,
+                        hide_arrow=True,
+                        id=f"{menu_item_name}_hover",
+                        target=f"{menu_item_name}_link",
+                        trigger="hover")]
     return main_div
 
 def create_nav_items():
@@ -88,7 +93,7 @@ layout = dbc.Container([
 
 
 layout_about_page = html.Div([
-    html.H2('About goes here',className='test_h')
+    html.H2('About goes here',className='placeholder_text')
 ])
 
 layout_map_page = html.Div([
